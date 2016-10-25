@@ -59,8 +59,8 @@ int main(void)
 
   while (1)
   {
-	 Tx_sendData(adc);
-	 for(i=0;i<80000;i++){}
+	// Tx_sendData(adc);
+	// for(i=0;i<80000;i++){}
   }
   return 0;
 }

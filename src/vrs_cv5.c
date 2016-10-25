@@ -21,7 +21,7 @@ void NVCI_ADC_init(void)
 	NVIC_InitTypeDef NVIC_InitStructure;
 	NVIC_InitStructure.NVIC_IRQChannel = ADC1_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
 	//NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
@@ -77,8 +77,10 @@ void USART1_init(void)
 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 	USART_Init(USART1, &USART_InitStructure);
 
-	USART_Cmd(USART1, ENABLE);
+	//USART_Cmd(USART1, ENABLE);
 	USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
+	USART_ITConfig(USART1, USART_IT_TC, ENABLE);
+	USART_Cmd(USART1, ENABLE);
 }
 
 void USART1_IRQHandler(void)
@@ -90,10 +92,11 @@ void USART1_IRQHandler(void)
 		USART_ClearITPendingBit(USART1, USART_IT_RXNE);
 	}
 
-/*	if(USART_GetITStatus(USART1, USART_IT_TC))
+	if(USART_GetITStatus(USART1, USART_IT_TC)!= RESET)
 	{
+		USART_ClearITPendingBit(USART1, USART_IT_TC);
 		Tx_sendData(adc);
-	}*/
+	}
 }
 
 void adc_init(void)
